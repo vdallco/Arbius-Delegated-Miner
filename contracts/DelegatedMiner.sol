@@ -23,6 +23,7 @@ contract DelegatedValidatorV1 {
     mapping(bytes32 => bool) public modelIdEnabled;
     bytes32[] public modelIds;
     address[] public stakers;
+    uint256 public stakersLength;
     uint256 public modelIdsLength;
     uint256 public minStakeAmount = 10000000000000; // 0.000010000000000000 AIUS min stake default
 
@@ -47,6 +48,8 @@ contract DelegatedValidatorV1 {
     event WithdrawCancelled(address indexed addr, uint256 count);
     event Withdraw(address indexed addr, uint256 count);
     event Claim(address indexed addr, uint256 amount);
+
+    //event CheckedModel(uint256 timestamp, bytes32 model, bool enabled);
 
     modifier onlyMiner() {
         require(msg.sender == miner, "onlyMiner");
@@ -105,11 +108,15 @@ contract DelegatedValidatorV1 {
         bytes32 _taskid,
         bytes memory _cid
     ) external onlyMiner {
-        require(
-            modelIdEnabled[arbius.tasks(_taskid).model],
-            "model not enabled"
-        );
+        (bytes32 model,,,,,) = arbiusTasks(_taskid);
+        require(modelIdEnabled[model], "model not enabled");
         arbius.submitSolution(_taskid, _cid);
+    }
+
+    function arbiusTasks(bytes32 _taskid) public view returns (bytes32,uint256,address,uint64,uint8,bytes memory) {
+        (, bytes memory arbiusTask) = address(arbius).staticcall(abi.encodeWithSignature("tasks(bytes32)",_taskid));
+        (bytes32 model,uint256 fee,address owner,uint64 blocktime,uint8 version,bytes memory cid) = abi.decode(arbiusTask, (bytes32,uint256,address,uint64,uint8,bytes));
+        return (model, fee, owner, blocktime, version, cid);
     }
 
     function submitTask(
@@ -131,18 +138,14 @@ contract DelegatedValidatorV1 {
     }
 
     function submitContestation(bytes32 _taskid) external onlyMiner {
-        require(
-            modelIdEnabled[arbius.tasks(_taskid).model],
-            "model not enabled"
-        );
+        (bytes32 model,,,,,) = arbiusTasks(_taskid);
+        require(modelIdEnabled[model], "model not enabled");
         arbius.submitContestation(_taskid);
     }
 
     function voteOnContestation(bytes32 _taskid, bool _yea) external onlyMiner {
-        require(
-            modelIdEnabled[arbius.tasks(_taskid).model],
-            "model not enabled"
-        );
+        (bytes32 model,,,,,) = arbiusTasks(_taskid);
+        require(modelIdEnabled[model], "model not enabled");
         arbius.voteOnContestation(_taskid, _yea);
     }
 
@@ -171,6 +174,7 @@ contract DelegatedValidatorV1 {
         }
         if(!stakerExists){
             stakers.push(msg.sender);
+            stakersLength = stakersLength + 1;
         }
         emit Deposit(msg.sender, _amount);
     }
@@ -245,15 +249,24 @@ contract DelegatedValidatorV1 {
         return baseToken.balanceOf(address(this)) - calculateRewardsEarned();
     }
 
+    function getRewardsPerUnitStaked() public view returns (uint256) {
+        uint256 stakingRewardsTotal = calculateRewardsEarned();
+        uint256 minerRewardsTotal = calculateMinerRewards();
+        uint256 multiplier = 10**18;
+
+        uint256 rewardsPerUnitStaked = (stakingRewardsTotal*multiplier)/totalDeposited;
+        return rewardsPerUnitStaked;
+    }
+
     function claim() external {
         uint256 stakingRewardsTotal = calculateRewardsEarned();
         uint256 minerRewardsTotal = calculateMinerRewards();
         uint256 multiplier = 10**18;
 
-        uint256 rewardsPerUnitStaked = (stakingRewardsTotal*multiplier) / (totalDeposited * multiplier);
+        uint256 rewardsPerUnitStaked = (stakingRewardsTotal*multiplier)/totalDeposited;
         require(rewardsPerUnitStaked > 0, "rewards too small to distribute");
 
-        for (uint256 stakerId=0; stakerId<stakers.length; stakerId++){
+        for (uint256 stakerId=0; stakerId<stakersLength; stakerId++){
             uint256 rewardAmount = (depositOf[stakers[stakerId]] * rewardsPerUnitStaked) / multiplier;
 
             baseToken.transfer(stakers[stakerId], rewardAmount);
