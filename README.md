@@ -13,3 +13,12 @@ In the MiningConfig.json file for Arbius Miner, add keys for use_delegated_valid
   }
 ```
 
+## Run the miner
+
+```
+yarn start:dev MiningConfig.json
+```
+
+## Claim rewards
+
+To claim rewards for stakers and the miner, simply call the claim() function on the Delegated Miner contract.
