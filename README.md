@@ -3,7 +3,6 @@ Solidity contract for a delegated Arbius miner that enables Liquid Staking AIUS,
 
 
 ## Configuration
-
 In the MiningConfig.json file for Arbius Miner, add keys for use_delegated_validator and delegated_validator_address
 
 ```
@@ -14,11 +13,13 @@ In the MiningConfig.json file for Arbius Miner, add keys for use_delegated_valid
 ```
 
 ## Run the miner
-
 ```
 yarn start:dev MiningConfig.json
 ```
 
 ## Claim rewards
-
 To claim rewards for stakers and the miner, simply call the claim() function on the Delegated Miner contract.
+
+## Credits
+- Majority credit to Kasumi from Arbius for beginning the Delegated Miner contract
+- Credit to vdallco for completing the Delegated Miner contract (added claim() rewards calculation logic, submitSolution() fix, submitTask() function)
