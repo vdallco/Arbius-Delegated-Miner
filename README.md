@@ -21,5 +21,5 @@ yarn start:dev MiningConfig.json
 To claim rewards for stakers and the miner, simply call the claim() function on the Delegated Miner contract.
 
 ## Credits
-- Majority credit to Kasumi from Arbius for beginning the Delegated Miner contract
+- Majority credit to [Kasumi](https://github.com/kasumi-1) from Arbius for creating the Delegated Miner contract
 - Credit to vdallco for completing the Delegated Miner contract (added claim() rewards calculation logic, submitSolution() fix, submitTask() function)
