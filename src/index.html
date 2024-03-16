@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Liquid Staking AIUS</title>
+        <!-- Compiled and minified Materialize CSS -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <script src="https://cdn.ethers.io/lib/ethers-5.2.umd.min.js" type="application/javascript"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/decimal.js/9.0.0/decimal.min.js" type="application/javascript"></script>
+        <link rel="icon" href="https://fren.joinstakehouse.com/favicon.png"/>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/dark.min.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
+
+    <!-- Compiled and minified Materialize JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap">
+
+        <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+  <body class="montserrat-font" style="background-color: rgba(18,18,18,1);">
+        <div class="container white-text" style="margin-top:25px;">
+
+        <div class="row" style="display:flex;justify-content: space-between;margin-bottom:0px;">
+                <p class="col s6" id="accountDisplay" style="visibility:hidden;overflow-wrap:break-word;margin-left:0px;margin-top:10px;"><span id="walletAddress"></span></p>
+
+                <p>
+                  <label>
+                    <input id="testnetSwitch" type="checkbox" />
+                    <span>Testnet</span>
+                  </label>
+                </p>
+
+                <a id="connectWallet" class="enableEthereumButton waves-effect waves-light btn btn-large col s3" style="border-radius:10px;">
+                        <i class="material-icons left hide-on-small-only">wallet</i>
+                        <span class="">Connect</span>
+                </a>
+        </div>
+
+
+        <div class="row">
+
+      <div id="depositTab" class="col s12">
+                <h3 style="margin-top:0px;"><b>Liquid Staking AIUS</b></h2>
+
+                <div class="alert card white-text text-darken-2" style="border-radius:10px;background-color:rgba(28,28,30,1);border-color:rgba(242, 215, 64, 0.4);border-style:solid;border-width:1px;">
+                        <div class="card-content" style="padding-bottom: 0px;padding-top: 10px;">
+                                        <div class="row">
+                                                <i class="material-icons small col s1" style="margin-right:4px;position: relative;top:15px;">help</i>
+                                            <h5 class="col s8">What is AIUS liquid staking?</h5>
+                                        </div>
+                                        <ul class="collection" style="border:none;">
+                                        <li class="collection-item white-text text-darken-2" style="border-bottom:none;background-color:rgba(28,28,30,1);">
+                                                <i class="material-icons xs col s1 hide-on-small-and-down" style="margin-right:4px;position: relative;top:5px;padding-top:0px;padding-bottom:0px">currency_exchange</i>
+                                                <b>Arbius (AIUS) holders</b> deposit AIUS to <b> delegated Arbius miners and earn a share of mining rewards</b>
+                                        </li>
+                                        <li class="collection-item white-text text-darken-2" style="border-bottom:none;padding-top:0px;padding-bottom:0px;background-color:rgba(28,28,30,1);">
+                                                <i class="material-icons xs col s1 hide-on-small-and-down" style="margin-right:4px;position: relative;top:5px;padding-top:0px;padding-bottom:0px">hub</i>
+                                                <b>Miners</b> who <b>need more AIUS to mine</b> may deploy a <b>delegated miner contract</b> to <b>source AIUS from stakers</b>
+                                        </li>
+                                        <li class="collection-item white-text text-darken-2" style="border-bottom:none;background-color:rgba(28,28,30,1);">
+                                                <i class="material-icons xs col s1 hide-on-small-and-down" style="margin-right:4px;position: relative;top:5px;">redeem</i>
+                                                <b>Mining rewards</b> are <b>trustlessly distributed to stakers</b> and <b>miners can always update the percentage of rewards they're sharing with stakers</b>
+                                        </li>
+                                        </ul>
+                        </div>
+                </div>
+
+                <div class="alert card white-text" style="border-radius:10px;background-color:rgba(28,28,30,1);border-color:rgba(242, 25, 64, 0.4);border-style:solid;border-width:1px;">
+                        <div class="card-content">
+                                <p>
+                                        <div class="row">
+                                                <i class="material-icons small col s1" style="margin-right:4px;position: relative;top:15px;">report</i>
+                                            <h5 class="col s4">Warnings and disclaimers</h5>
+                                        </div>
+                                        <ul class="collection" style="border:none;">
+                                                <li class="collection-item white-text text-darken-2" style="border-bottom:none;background-color:rgba(28,28,30,1);">
+                                                        <i class="material-icons xs col s1 hide-on-small-and-down" style="margin-right:4px;position: relative;top:5px;padding-top:0px;padding-bottom:0px">gpp_maybe</i> <b>There is significant slashing risk for stakers.</b> No collaterial is held by the delegated miner contract to pay stakers in the event that the miner is slashed. Be aware of this risk and avoid staking with unfamiliar or untrustworthy miners.
+                                                </li>
+                                                <li class="collection-item white-text text-darken-2" style="border-bottom:none;background-color:rgba(28,28,30,1);">
+                                                        <i class="material-icons xs col s1 hide-on-small-and-down" style="margin-right:4px;position: relative;top:5px;padding-top:0px;padding-bottom:0px">lock_outline</i> <b>The delegated miner contract has not been formally audited.</b> There may be signficant risks involved with using the delegated miner contract.
+                                                </li>
+                                        </ul>
+
+                                </p>
+                        </div>
+                </div>
+
+                <div class="card-panel lighten-2 white-text" style="background-color:#424242;border-radius:10px;">
+                        <h4><b>Stake</b></h4>
+                        <div class="row">
+                                <div id="stakeDiv" class="col s12">
+                                        <p>You must specify a <b>delegated miner address</b> and a <b>total amount of AIUS to approve and stake</b></p>
+                                        <br/>
+                                        <p><b>You may not stake with a regular Arbius miner, only with a Delegated Miner contract</b></p>
+                                        <br/>
+
+                                        <div class="row">
+                                                <div class="col s8 m8 input-field">
+                                                  <input class="white-text" type="text" id="minerAddress"/>
+                                                  <label for="minerAddress" style="color:#00ED76;">Miner address</label>
+                                                </div>
+                                        </div>
+                                        <div class="row">
+                                                <div class="col s5 input-field">
+                                                        <input class="white-text" type="number" id="stakeAmount"/>
+                                                        <label for="stakeAmount" style="color:#00ED76;">AIUS to stake</label>
+                                                </div>
+                                                <!--<p>
+                                                  <label>
+                                                    <input id="testnetSwitch" type="checkbox" />
+                                                    <span>Testnet</span>
+                                                  </label>
+                                                </p>-->
+                                                <div class="col s2 btn btn-large black-text" id="approveAIUS" style="background-color:#78A7FF;border-radius: 15px;">Approve</div>
+                                                <div class="col s2 btn btn-large" id="stakeAIUS" style="display:none;background-color:#00ED76;border-radius: 15px;">Stake</div>
+                                        </div>
+
+                                        <div class="progress" id="stakeLoading" style="display:none;">
+                                                <div class="indeterminate"></div>
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+
+                <div class="card-panel lighten-2 white-text" style="background-color:#424242;border-radius:10px;">
+                        <h4><b>Miner lookup</b></h4>
+                        <div class="row">
+                                <div class="row">
+                                     <div class="col s8 m8 input-field">
+                                       <input class="white-text" type="text" id="minerAddressLookup"/>
+                                       <label for="minerAddressLookup" style="color:#00ED76;">Miner address</label>
+                                     </div>
+
+                                <div class="progress" id="lookupLoading" style="display:none;">
+                                    <div class="indeterminate"></div>
+                                </div>
+                                <div class="col s2 btn btn-large black-text" id="lookupMiner" style="background-color:#78A7FF;border-radius: 15px;">Lookup</div>
+                                </div>
+
+                                <div id="lookupResults" class="row">
+                                        <table id="lookupTable">
+                                                <tbody></tbody>
+                                        </table>
+                                </div>
+                        </div>
+                </div>
+
+                <div class="card-panel lighten-2 white-text" style="background-color:#424242;border-radius:10px;">
+                        <h4><b>Deploy delegated miner</b></h4>
+                        <div class="row">
+                                <div class="row">
+                                     <div class="col s8 m8 input-field">
+                                       <input class="white-text" type="text" id="minerAddressDeploy"/>
+                                       <label for="minerAddressDeploy" style="color:#00ED76;">Miner wallet</label>
+                                     </div>
+                                </div>
+
+                                <div class="row">
+                                     <div class="col s8 m8 input-field">
+                                       <input class="white-text" type="text" id="modelIdsDeploy"/>
+                                       <label for="modelIdsDeploy" style="color:#00ED76;">Model IDs (comma-separated)</label>
+                                     </div>
+                                </div>
+
+                                <div class="row">
+                                     <div class="col s3 m3 input-field">
+                                       <input class="white-text" type="number" onchange="document.getElementById('rewardShareInfo').innerHTML = 'Reward share divisor of ' + this.value + ' is about ' + 100/this.value + '%';" id="rewardShareDivisor"/>
+                                       <label for="rewardShareDivisor" style="color:#00ED76;">Reward share divisor</label>
+                                     </div>
+
+                                     <div class="col s3 m3 input-field">
+                                       <input class="white-text" type="number" id="lendingAPR"/>
+                                       <label for="lendingAPR" style="color:#00ED76;">Lending APR</label>
+                                     </div>
+                                     <div class="col s2 btn btn-large black-text" id="deployMiner" style="background-color:#78A7FF;border-radius: 15px;">Deploy</div>
+                                </div>
+
+                                <div class="row">
+                                        <p id="rewardShareInfo"></p>
+                                </div>
+
+                                <div class="row">
+                                 <div class="progress" id="deployLoading" style="display:none;">
+                                    <div class="indeterminate"></div>
+                                 </div>
+                                </div>
+                        </div>
+                </div>
+
+
+          </div>
+
+    </div>
+    </div>
+
+
+    <script src="bundle.js"></script>
+        <script>
+                hljs.highlightAll();
+
+
+                 document.addEventListener('DOMContentLoaded', function() {
+                        var elemsModal = document.querySelectorAll('.modal');
+                        var instances = M.Modal.init(elemsModal, undefined);
+
+                        var elemsCollapse = document.querySelectorAll('.collapsible');
+                        var instances = M.Collapsible.init(elemsCollapse, undefined);
+
+                        var elems = document.querySelectorAll('select');
+                        var instances = M.FormSelect.init(elems, undefined);
+                  });
+
+
+        </script>
+  </body>
+</html>
