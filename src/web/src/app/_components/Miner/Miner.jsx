@@ -5,25 +5,24 @@ import share from '../../assets/images/share.png'
 import verified from '../../assets/images/verified.png'
 import unverified from '../../assets/images/unverified.png'
 import Image from 'next/image'
-export default function Minor({changeNetworkError}){
-    const [minor,setMinor]=useState("")
+export default function Miner({changeNetworkError}){
+    const [miner,setMiner]=useState("")
     const [loader,setLoader]=useState(false)
     const [results,setResults]=useState({})
-    const minorLookupHandler=async()=>{
+    const minerLookupHandler=async()=>{
     try{
-        if(!minor){
+        if(!miner){
             return;
         }
-        console.log(minor)
+        console.log(miner)
         setLoader(true)
-       const outputResult= await lookupMiner(minor)
+       const outputResult= await lookupMiner(miner)
        console.log(outputResult)
        if(outputResult.purpose==="error"&&outputResult.message==="Not on Arbitrum"){
         changeNetworkError()
         setLoader(false)
         return;
     }
-    //   setResults({minorId:"0x99"})
       setResults(outputResult)
       setLoader(false)
 }catch(err){
@@ -31,11 +30,11 @@ export default function Minor({changeNetworkError}){
     setLoader(false)
 }
     }
-    const minorInputHandler=(e)=>{
-        setMinor(e.target.value)
+    const minerInputHandler=(e)=>{
+        setMiner(e.target.value)
     }
     const resetLookup=()=>{
-        setMinor("")
+        setMiner("")
         setResults({})
     }
     function copyToClipboard(text) {
@@ -51,7 +50,7 @@ export default function Minor({changeNetworkError}){
     const withDrawHandler=async()=>{
     try{
         setLoader(true)
-        const withDrawResponse=await withdraw(minor)
+        const withDrawResponse=await withdraw(miner)
         if(withDrawResponse?.purpose==="error"&&withDrawResponse?.message==="Not on Arbitrum"){
             changeNetworkError()
             setLoader(false)
@@ -70,7 +69,7 @@ export default function Minor({changeNetworkError}){
     const unStakeHandler=async()=>{
         try{
         setLoader(true)
-        const unStakeResponse=await initiateWithdraw(minor)
+        const unStakeResponse=await initiateWithdraw(miner)
         if(unStakeResponse?.purpose==="error"&&unStakeResponse?.message==="Not on Arbitrum"){
             changeNetworkError()
             setLoader(false)
@@ -94,19 +93,19 @@ export default function Minor({changeNetworkError}){
                 </div>
                 <div className="mt-2 flex items-center w-[100%] gap-4">
                     <div className="mt-4 lg:w-input-width xm:w-mobile-input-width w-smaller-mobile-input">
-                        <input type="text" onChange={minorInputHandler} value={minor} className="border dark:border-border-boxes border-white-mode dark:bg-input-background bg-white rounded-2xl dark:text-t-white text-t-black p-2 w-[100%]" placeholder="Miner Address"/>
+                        <input type="text" onChange={minerInputHandler} value={miner} className="border dark:border-border-boxes border-white-mode dark:bg-input-background bg-white rounded-2xl dark:text-t-white text-t-black p-2 w-[100%]" placeholder="Miner Address"/>
                     </div>
                     {
-                        results?.minorWallet?
+                        results?.minerWallet?
                     <div className="mt-4">
                         <button type="button" onClick={resetLookup} className="bg-gradient-linear flex items-center gap-2 text-t-white font-bold px-4 py-2 rounded-md hover:bg-hover-gradient">Reset</button>
                     </div>:""
                     }
                 </div>
                 {
-                    !results?.minorWallet?
+                    !results?.minerWallet?
                 <div className="mt-4">
-                    <button type="button" onClick={minorLookupHandler} className="bg-gradient-linear flex items-center gap-2 text-t-white font-bold px-4 py-2 rounded-md hover:bg-hover-gradient">
+                    <button type="button" onClick={minerLookupHandler} className="bg-gradient-linear flex items-center gap-2 text-t-white font-bold px-4 py-2 rounded-md hover:bg-hover-gradient">
                         Lookup
                         {loader?
                         <div className="loader"></div>:""
@@ -115,7 +114,7 @@ export default function Minor({changeNetworkError}){
                 </div>:""
                }
                {
-                results?.minorWallet?
+                results?.minerWallet?
                 <div className="mt-8">
                     <div className=" lg:w-input-width xm:w-mobile-input-width w-smaller-mobile-input  flex lg:items-center items-start justify-between mt-4 lg:flex-row flex-col lg:gap-0 gap-2">
                         <div className="lg:w-[30%] w-[100%]">
@@ -124,9 +123,9 @@ export default function Minor({changeNetworkError}){
                         <div className="lg:w-[70%] w-[100%]">
                             <div className="dark:bg-white bg-black p-2 rounded-2xl flex items-center justify-between">
                                 <div>
-                                    <p className="dark:text-t-black text-t-white font-semibold text-sm">{results.minorWallet.slice(0, 18)+"..."+results.minorWallet.slice(-5)}</p>
+                                    <p className="dark:text-t-black text-t-white font-semibold text-sm">{results.minerWallet.slice(0, 18)+"..."+results.minerWallet.slice(-5)}</p>
                                 </div>
-                                <div className="bg-gradient-linear hover:bg-hover-gradient cursor-pointer w-[35px] h-[35px] rounded-[50%] flex items-center justify-center" onClick={()=>copyToClipboard(results.minorWallet)}>
+                                <div className="bg-gradient-linear hover:bg-hover-gradient cursor-pointer w-[35px] h-[35px] rounded-[50%] flex items-center justify-center" onClick={()=>copyToClipboard(results.minerWallet)}>
                                     <Image width={20} src={share} alt="share"/>
                                 </div>
                             </div>
