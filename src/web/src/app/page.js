@@ -6,6 +6,7 @@ import Stake from "./_components/Stake/Stake";
 import Miner from "./_components/Miner/Miner";
 import Deploy from "./_components/Deploy/Deploy";
 import NetworkChange from "./_components/modals/NetworkChange/NetworkChange";
+import Footer from "./_components/Footer/Footer";
 export default function Home() {
   const [toggle,setToggle]=useState(false)
   const [openNetworkError,setOpenNetworkError]=useState(false)
@@ -31,6 +32,7 @@ const changeNetworkError=()=>{
       <Stake changeNetworkError={changeNetworkError} toggle={toggle}/>
       <Miner changeNetworkError={changeNetworkError}/>
       <Deploy changeNetworkError={changeNetworkError} toggle={toggle}/>
+      <Footer/>
     </main>
   );
 }
