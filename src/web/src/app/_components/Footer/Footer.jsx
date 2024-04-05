@@ -6,7 +6,7 @@ export default function Footer(){
     return(
         <footer>
             <div className="dark:bg-box-background bg-white border-t dark:border-border-boxes border-white-mode py-6">
-                <div className="max-w-center-width w-[98%] lg:w-page-width mx-auto">
+                <div className="max-w-center-width w-[98%] lg:w-page-width lg:px-0 px-4 mx-auto">
                     <div className="flex items-center gap-2">
                         <div className="dark:bg-white rounded-[50%] bg-black w-[50px] h-[50px] flex items-center justify-center">
                             <Image width={50} src={arbius} alt="arbius"/>
@@ -34,10 +34,7 @@ export default function Footer(){
                         </div>
                     </div>
                     <div className="dark:bg-[#ffffff80] bg-[#000000] w-[100%] h-[1px] my-6"></div>
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <a href="#"><p className="dark:text-t-white text-t-black">Terms of Use</p></a>
-                        </div>
+                    <div className="flex items-center justify-end">
                         <div>
                             <a href="https://github.com/vdallco/Arbius-Delegated-Miner" target="_blank" rel="noreferrer">
                                 <Image width={30} className='dark:invert invert-0' src={github} alt="github"/>
